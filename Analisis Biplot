@@ -1,5 +1,5 @@
 getwd()
-setwd("D:\\R Project\\Analisis Peubah Ganda Lanjut\\BIPLOT")
+setwd("D:\\")
 ls()
 rm(list=ls(all=TRUE))
 
