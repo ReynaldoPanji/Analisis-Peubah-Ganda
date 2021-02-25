@@ -1,0 +1,39 @@
+getwd()
+setwd("D:\\R Project\\Analisis Peubah Ganda Lanjut\\BIPLOT")
+ls()
+rm(list=ls(all=TRUE))
+
+#==================Matriks Data===================#
+data <- read.table("Analisis Biplot.txt", header=T)
+data.matriks <- as.matrix.data.frame(data)
+data.matriks.sc <- scale(data.matriks)
+
+#===========Singular Value Decomposition==========#
+M <- svd(data.matriks.sc)
+L <- diag(M$d)
+U <- M$u
+A <- M$v
+
+#===================Matriks GH====================#
+G  <- U
+H  <- A%*%L
+G2 <- G[,1:2]
+H2 <- H[,1:2]
+
+#==============Besar Penciri Biplot===============#
+Var <- eigen(t(data.matriks.sc)%*%data.matriks.sc)
+Var_Biplot <- ((Var$values[1]+Var$values[2])
+                /(p$values[1]+p$values[2]+p$values[3]+
+                  p$values[4]+p$values[5]))
+Var_Biplot
+
+#==================Grafik Biplot==================#
+data_new <- prcomp(data.matriks.sc, expand=7)
+biplot(data_new, main="Analisis Biplot")
+abline(h=0)
+abline(v=0)
+
+#=================Summarize Data==================#
+summary(data_new)
+datanew <- scale(data)
+cor(datanew)
