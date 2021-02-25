@@ -1,0 +1,71 @@
+getwd()
+setwd("D:\\")
+ls()
+rm(list=ls(all=TRUE))
+
+library("FactoMineR")
+library("factoextra")
+library("gplots")
+library("corrplot")
+
+#==============Uji Chi-Square Data================#
+RUMAH <- read.table("Tugas Rumah.txt",header=T)
+chisq <- chisq.test(RUMAH)
+chisq
+
+#=============Analisis Korespondensi==============#
+res.ca=CA(RUMAH, graph = FALSE)
+res.ca=CA(RUMAH, graph = TRUE)
+fviz_ca_biplot(res.ca, 
+               map ="rowprincipal", arrow = c(TRUE, TRUE),
+               repel = TRUE)
+summary(res.ca)
+
+#=============Nilai Eigen / Akar Ciri=============#
+get_eigenvalue(res.ca)
+fviz_eig(res.ca)+
+geom_hline(yintercept=33.33, linetype=2, color="red")
+
+#==============Penjabaran Baris================#
+row <- get_ca_row(res.ca)
+row
+
+	#Koordinat
+	head(row$coord)
+	fviz_ca_row(res.ca)
+
+	#Penggambaran Kualitas
+	head(row$cos2, 13)
+	fviz_ca_row(res.ca, col.row = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+	fviz_cos2(res.ca, choice = "row", axes = 1:2)
+
+	#Kontribusi
+	head(row$contrib,13)
+	fviz_ca_row(res.ca, col.row = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+	fviz_contrib(res.ca, choice = "row", axes = 1:2, top = 10)
+
+#==============Penjabaran Kolom================#
+col <- get_ca_col(res.ca)
+col
+
+	#Koordinat
+	head(col$coord)
+	fviz_ca_col(res.ca)
+
+	#Penggambaran Kualitas
+	head(col$cos2, 4)
+	fviz_ca_col(res.ca, col.col = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+	fviz_cos2(res.ca, choice = "col", axes = 1:2)
+
+	#Kontribusi
+	head(col$contrib,4)
+	fviz_ca_col(res.ca, col.col = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+	fviz_contrib(res.ca, choice = "col", axes = 1:2, top = 10)
